@@ -1,0 +1,19 @@
+{
+  "active_thickness_nm": 850,
+  "matched_fill_comparison": {
+    "QD_fill": 0.2,
+    "QD_1550_NH4I_effective_medium_mA_cm2": 40.3268,
+    "QD_5nm_effective_medium_mA_cm2": 44.5069,
+    "QD_5nm_explicit_refined_range_mA_cm2": [
+      45.2801,
+      45.6462
+    ]
+  },
+  "QD_5nm_effective_medium_sweep_mA_cm2": {
+    "fill_0.1": 41.7756,
+    "fill_0.2": 44.5069,
+    "fill_0.3": 50.0117,
+    "fill_0.4": 50.3717
+  },
+  "conclusion": "Optical-material choice has a much larger effect than explicit square/hex/honeycomb organization at matched 20% fill."
+}

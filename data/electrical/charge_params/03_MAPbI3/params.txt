@@ -1,0 +1,19 @@
+LAYER 03 — MAPbI3  (perovskite, visible absorber)
+=================================================
+Role        : visible-light absorber (300-800 nm)
+Thickness   : 550 nm                           (design, S5)
+
+Eg          : 1.55 eV   (1.50 also common)     (S2 / consensus; matches FDTD)
+chi (EA)    : 3.9  eV                           (S2)
+eps_r       : 10   (some studies 6.5)          (S2)
+Nc          : 2.75e18 cm-3                      (S2)
+Nv          : 3.9e18  cm-3                      (S2)
+mu_n        : 10   cm2/Vs   (sweep 1 ... 50)    (S2)
+mu_p        : 10   cm2/Vs   (sweep 1 ... 50)    (S2)
+N_A (accept): 1e15 cm-3     (lightly p-type; sweep 1e15 ... 1e18)  (S2)
+N_D         : 0
+Nt (defect) : 1e14 cm-3     (bulk SRH; sweep 1e13 ... 1e16)        (S2)
+tau (SRH)   : ~1-100 ns     (set via Nt + capture cross-section; ~10 ns typical)
+
+Note: bandgap of the actual MAPbI3 optical model = 1.55 eV. mu and Nt/tau are
+the bulk sweep knobs per the project plan.

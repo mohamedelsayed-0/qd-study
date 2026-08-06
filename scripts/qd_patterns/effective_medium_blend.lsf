@@ -1,0 +1,97 @@
+# QDs embedded in perovskite: homogeneous Maxwell-Garnett reference.
+# Runs both the historical 550 nm active thickness and the fair 850 nm
+# thickness match to the 550 nm MAPbI3 + 300 nm separate-QD stack.
+
+q_e=1.602176634e-19;
+host_mat="perovskite";
+inc_mats={"QD_1550_NH4I","QD-5nm"};
+f_list=[0.10,0.20,0.30,0.40];
+t_list=[550e-9,850e-9];
+t_au=100e-9; t_mox=10e-9; t_edt=50e-9; t_sno2=40e-9; t_fto=300e-9;
+span_x=50e-9; span_y=50e-9;
+
+Nfill=length(f_list); Nt=length(t_list); Nmat=length(inc_mats);
+res=matrix(Nfill*Nt*Nmat,6); # material index, thickness, fill, J, NIR PtV, bound error
+if(fileexists("blend_log.txt")){ rm("blend_log.txt"); }
+if(fileexists("blend_results.csv")){ rm("blend_results.csv"); }
+write("blend_results.csv","inclusion_material,active_thickness_nm,QD_fill,Jopt_mA_cm2,NIR_peak_to_valley,max_energy_bound_error");
+
+# Ascending frequency is required for deterministic sampled-material data.
+Nw=400;
+fg=linspace(c/1700e-9,c/300e-9,Nw);
+switchtolayout;
+blendmat=addmaterial("Sampled 3D data");
+
+solar_wavelength=solar(0);
+solar_irradiance=solar(1);
+row=0;
+for(mat_i=1:Nmat){
+  inc_mat=inc_mats{mat_i};
+  for(t_i=1:Nt){
+    t_act=t_list(t_i);
+    for(fill_i=1:Nfill){
+      fq=f_list(fill_i);
+      row=row+1;
+
+      sampled_data=matrix(Nw,2);
+      for(w_i=1:Nw){
+        nh=getfdtdindex(host_mat,fg(w_i),fg(w_i),fg(w_i));
+        ni=getfdtdindex(inc_mat,fg(w_i),fg(w_i),fg(w_i));
+        eps_h=nh^2; eps_i=ni^2;
+        beta=fq*(eps_i-eps_h)/(eps_i+2*eps_h);
+        eps_eff=eps_h*(1+2*beta)/(1-beta);
+        sampled_data(w_i,1)=fg(w_i);
+        sampled_data(w_i,2)=eps_eff;
+      }
+
+      build_embedded_active;
+      setmaterial(blendmat,"sampled data",sampled_data);
+      setnamed("Perovskite","material",blendmat);
+      run;
+
+      fmon=getdata("P_pvk_top","f");
+      lam=c/fmon; Nlam=length(lam);
+      Rspec=transmission("R"); Tspec=transmission("T"); Atot=1-Rspec-Tspec;
+      Aactive=-transmission("P_pvk_top")+transmission("P_qd_edt");
+      Iam=matrix(Nlam,1);
+      for(w_i=1:Nlam){
+        Iam(w_i)=interp(solar_irradiance,solar_wavelength,lam(w_i));
+      }
+      Jint=0;
+      for(w_i=1:Nlam-1){
+        dl=lam(w_i+1)-lam(w_i);
+        Jint=Jint+0.5*((Aactive(w_i)*Iam(w_i)*lam(w_i)+Aactive(w_i+1)*Iam(w_i+1)*lam(w_i+1))/(h*c))*dl;
+      }
+      Jopt=abs(q_e*Jint*0.1);
+
+      a_lo=1; a_hi=0;
+      for(w_i=1:Nlam){
+        if(lam(w_i)>=800e-9 & lam(w_i)<=1700e-9){
+          if(Atot(w_i)<a_lo){ a_lo=Atot(w_i); }
+          if(Atot(w_i)>a_hi){ a_hi=Atot(w_i); }
+        }
+      }
+      ptv=a_hi-a_lo;
+      violation=max([max(Rspec)-1,-min(Rspec),max(Atot)-1,-min(Atot),0]);
+
+      res(row,1)=mat_i; res(row,2)=t_act; res(row,3)=fq; res(row,4)=Jopt;
+      res(row,5)=ptv; res(row,6)=violation;
+      write("blend_log.txt","material="+inc_mat+",t_nm="+num2str(t_act*1e9)+",f_QD="+num2str(fq)+",Jopt="+num2str(Jopt)+",NIR_PtV="+num2str(ptv)+",bound_violation="+num2str(violation));
+      write("blend_results.csv",inc_mat+","+num2str(t_act*1e9)+","+num2str(fq)+","+num2str(Jopt)+","+num2str(ptv)+","+num2str(violation));
+      ?"blend material="+inc_mat+"  t="+num2str(t_act*1e9)+" nm  f="+num2str(fq)+"  raw optical J="+num2str(Jopt)+" mA/cm2";
+    }
+  }
+}
+
+matlabsave("blend_out",inc_mats,f_list,t_list,res);
+J1550_550=res(1:Nfill,4);
+J1550_850=res(Nfill+1:Nfill*2,4);
+J5nm_550=res(Nfill*Nt+1:Nfill*Nt+Nfill,4);
+J5nm_850=res(Nfill*Nt+Nfill+1:Nfill*Nt*Nmat,4);
+plot(f_list,J1550_550,J1550_850,J5nm_550,J5nm_850,"QD volume fraction","absorbed-photon current (mA/cm2)","QD/perovskite Maxwell-Garnett blend");
+legend("1550 NH4I, 550 nm","1550 NH4I, 850 nm","5 nm QD, 550 nm","5 nm QD, 850 nm");
+
+# Restore a known clean embedded-active reference.
+t_act=850e-9;
+build_embedded_active;
+?"DONE: blend sweep complete; model restored to the 850 nm embedded-active reference.";

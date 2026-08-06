@@ -1,0 +1,22 @@
+D2 optimized (d2_max) FF diagnostic
+====================================
+Reported FF at MPP: 0.671
+QFL splitting at MPP:              0.548 eV
+Bandstructure grid:                4033 points over y = -0 to 1350 nm
+Ec - Efn range in active layer:    0.962 eV
+Efp - Ev range in active layer:    3.360 eV  (dominated by wide-gap FTO/SnO2)
+Peak electron density:             1.38e18 cm^-3
+Peak hole density:                 8.69e17 cm^-3
+Peak SRH recombination rate:       4.41e24 m^-3 s^-1
+
+Interpretation:
+- QFL splitting 0.548 eV at MPP is well below the 1.44 eV blend gap, indicating
+  significant thermalization / bulk recombination losses across the 850 nm active.
+- SRH peak at 4.4e24 m^-3 s^-1 confirms bulk-recombination-dominated regime;
+  consistent with the intensity-dependent ideality factor n=1.86 measured earlier.
+- Combined with the mobility sweep (FF grows 0.576 -> 0.678 across mu 0.02 -> 50),
+  D2 FF is jointly bulk-recombination and mobility limited, not interface limited.
+
+Full band-structure / recombination profile export deferred (I_anode key mismatch in
+Lumerical result set required post-processing; issue is diagnostic-only, does not affect
+the paper conclusion).

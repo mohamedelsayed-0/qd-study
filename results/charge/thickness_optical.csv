@@ -1,0 +1,12 @@
+layer,thickness_nm,Jopt_mA_cm2
+perovskite,450,37.86
+perovskite,550,39.49
+perovskite,650,38.38
+perovskite,750,39.67
+qd_film,200,36.42
+qd_film,300,39.49
+qd_film,400,40.09
+qd_film,500,43.08
+blend,650,39.86
+blend,850,43.17
+blend,1050,42.42

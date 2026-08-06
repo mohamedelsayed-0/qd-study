@@ -1,0 +1,152 @@
+# Explicit 5 nm QD organization study inside the perovskite active material.
+#
+# Patterns (matched target volume fraction):
+#   1 square   = aligned square planes (simple-cubic organization)
+#   2 hex      = triangular/hexagonal lateral planes
+#   3 honeycomb
+#
+# IMPORTANT MODEL LIMIT:
+# "QD-5nm" is the repository's 5 nm optical-material surrogate. This FDTD
+# study resolves physical 5 nm spheres, but it is not a quantum-confinement
+# solver and does not replace an experimentally measured single-dot dielectric
+# function. At these periods the expected optical pattern effect is small;
+# electrical percolation still requires a separately calibrated CHARGE model.
+
+if(exist("requested_pattern")==0){ requested_pattern="all"; }
+if(exist("pattern_mesh_xy_nm")==0){ pattern_mesh_xy_nm=0.75; }
+if(exist("pattern_result_tag")==0){ pattern_result_tag=requested_pattern; }
+qd_diameter=5e-9;
+qd_radius=qd_diameter/2;
+qd_material="QD-5nm";
+f_target=0.20;
+z_pitch=7e-9;                  # 2 nm ligand/matrix gap between vertical neighbors
+t_act=850e-9;                  # thickness-matched to 550 nm MAPbI3 + 300 nm QD film
+t_au=100e-9; t_mox=10e-9; t_edt=50e-9; t_sno2=40e-9; t_fto=300e-9;
+
+patterns={"square","hex","honeycomb"};
+Npatterns=length(patterns);
+pattern_start=1; pattern_stop=Npatterns;
+if(requested_pattern=="square"){ pattern_start=1; pattern_stop=1; }
+if(requested_pattern=="hex"){ pattern_start=2; pattern_stop=2; }
+if(requested_pattern=="honeycomb"){ pattern_start=3; pattern_stop=3; }
+
+results=matrix(Npatterns,7); # J0, J90, Junpol, fill, spacing, R/A bound errors
+if(requested_pattern=="all"){
+  log_name="qd_5nm_pattern_log.txt";
+  csv_name="qd_5nm_pattern_results.csv";
+  result_name="qd_5nm_pattern_out";
+} else {
+  log_name="qd_5nm_"+pattern_result_tag+"_log.txt";
+  csv_name="qd_5nm_"+pattern_result_tag+"_results.csv";
+  result_name="qd_5nm_"+pattern_result_tag+"_out";
+}
+if(fileexists(log_name)){ rm(log_name); }
+if(fileexists(csv_name)){ rm(csv_name); }
+write(csv_name,"pattern,mesh_xy_nm,J0_mA_cm2,J90_mA_cm2,Junpolarized_mA_cm2,achieved_fill,nearest_spacing_nm,max_energy_bound_error");
+
+sphere_volume=4*pi*qd_radius^3/3;
+Nz=floor((t_act-2*qd_radius)/z_pitch)+1;
+
+solar_wavelength=solar(0);
+solar_irradiance=solar(1);
+for(pattern_i=pattern_start:pattern_stop){
+  pattern=patterns{pattern_i};
+
+  if(pattern=="square"){
+    lattice_a=sqrt(sphere_volume/(f_target*z_pitch));
+    span_x=lattice_a; span_y=lattice_a; Nxy=1;
+    dot_x=[0]; dot_y=[0];
+  }
+  if(pattern=="hex"){
+    lattice_a=sqrt(2*sphere_volume/(sqrt(3)*f_target*z_pitch));
+    span_x=lattice_a; span_y=sqrt(3)*lattice_a; Nxy=2;
+    dot_x=[-lattice_a/4,lattice_a/4];
+    dot_y=[-sqrt(3)*lattice_a/4,sqrt(3)*lattice_a/4];
+  }
+  if(pattern=="honeycomb"){
+    lattice_a=sqrt(4*sphere_volume/(3*sqrt(3)*f_target*z_pitch));
+    span_x=3*lattice_a; span_y=sqrt(3)*lattice_a; Nxy=4;
+    dot_x=[-1.25*lattice_a,-0.25*lattice_a,0.25*lattice_a,1.25*lattice_a];
+    dot_y=[-sqrt(3)*lattice_a/4,-sqrt(3)*lattice_a/4,sqrt(3)*lattice_a/4,sqrt(3)*lattice_a/4];
+  }
+
+  build_embedded_active;
+  setglobalmonitor("frequency points",150);
+  setnamed("FDTD","mesh accuracy",2);
+
+  groupscope("::model");
+  if(getnamednumber("QDPATTERN")>0){ select("QDPATTERN"); delete; }
+  addstructuregroup; set("name","QDPATTERN");
+  groupscope("::model::QDPATTERN");
+  dot_count=0;
+  for(layer_i=1:Nz){
+    dot_z=z_active_bottom+qd_radius+(layer_i-1)*z_pitch;
+    for(dot_i=1:Nxy){
+      addsphere;
+      dot_count=dot_count+1;
+      set("name","QD5_"+num2str(dot_count));
+      set("material",qd_material);
+      set("override mesh order from material database",1);
+      set("mesh order",1);
+      set("radius",qd_radius);
+      set("x",dot_x(dot_i));
+      set("y",dot_y(dot_i));
+      set("z",dot_z);
+    }
+  }
+  groupscope("::model");
+
+  if(getnamednumber("PATTERN_MESH")==0){ addmesh; set("name","PATTERN_MESH"); }
+  setnamed("PATTERN_MESH","enabled",1);
+  select("PATTERN_MESH");
+  set("x",0); set("x span",span_x);
+  set("y",0); set("y span",span_y);
+  set("z",(z_active_bottom+z_active_top)/2); set("z span",t_act);
+  set("dx",pattern_mesh_xy_nm*1e-9);
+  set("dy",pattern_mesh_xy_nm*1e-9);
+  set("dz",1e-9);
+
+  achieved_fill=dot_count*sphere_volume/(span_x*span_y*t_act);
+  results(pattern_i,4)=achieved_fill;
+  results(pattern_i,5)=lattice_a;
+
+  for(pol_i=1:2){
+    switchtolayout;
+    setnamed("PlaneWave","polarization angle",(pol_i-1)*90);
+    run;
+
+    fmon=getdata("P_pvk_top","f");
+    lam=c/fmon; Nlam=length(lam);
+    Aactive=-transmission("P_pvk_top")+transmission("P_qd_edt");
+    Rspec=transmission("R"); Tspec=transmission("T"); Atot=1-Rspec-Tspec;
+    Iam=matrix(Nlam,1);
+    for(metric_i=1:Nlam){
+      Iam(metric_i)=interp(solar_irradiance,solar_wavelength,lam(metric_i));
+    }
+    Jint=0;
+    for(metric_i=1:Nlam-1){
+      dl=lam(metric_i+1)-lam(metric_i);
+      Jint=Jint+0.5*((Aactive(metric_i)*Iam(metric_i)*lam(metric_i)+Aactive(metric_i+1)*Iam(metric_i+1)*lam(metric_i+1))/(h*c))*dl;
+    }
+    J_pattern=abs(1.602176634e-19*Jint*0.1);
+    results(pattern_i,pol_i)=J_pattern;
+    bound_error=max([max(Rspec)-1,-min(Rspec),max(Atot)-1,-min(Atot),0]);
+    results(pattern_i,5+pol_i)=bound_error;
+  }
+
+  results(pattern_i,3)=0.5*(results(pattern_i,1)+results(pattern_i,2));
+  max_bound_error=max([results(pattern_i,6),results(pattern_i,7)]);
+  write(log_name,pattern+",J0="+num2str(results(pattern_i,1))+",J90="+num2str(results(pattern_i,2))+",Junpol="+num2str(results(pattern_i,3))+",fill="+num2str(achieved_fill)+",a_nm="+num2str(lattice_a*1e9)+",bound_error="+num2str(max_bound_error));
+  write(csv_name,pattern+","+num2str(pattern_mesh_xy_nm)+","+num2str(results(pattern_i,1))+","+num2str(results(pattern_i,2))+","+num2str(results(pattern_i,3))+","+num2str(achieved_fill)+","+num2str(lattice_a*1e9)+","+num2str(max_bound_error));
+  ?pattern+"  Junpolarized="+num2str(results(pattern_i,3))+" mA/cm2  achieved fill="+num2str(achieved_fill)+"  nearest spacing="+num2str(lattice_a*1e9)+" nm";
+}
+
+matlabsave(result_name,patterns,results,qd_diameter,f_target,z_pitch,t_act,pattern_mesh_xy_nm);
+if(requested_pattern=="all"){
+  plot(linspace(1,Npatterns,Npatterns),results(1:Npatterns,3),"pattern (1 square, 2 hex, 3 honeycomb)","absorbed-photon current (mA/cm2)","Explicit 5 nm QDs in perovskite: organization comparison");
+}
+
+# Leave a clean, thickness-matched embedded-active reference.
+span_x=50e-9; span_y=50e-9;
+build_embedded_active;
+?"DONE: explicit 5 nm pattern sweep complete; model restored to clean embedded-active reference.";

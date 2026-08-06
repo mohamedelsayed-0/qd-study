@@ -1,0 +1,54 @@
+# Optical constants of p-PbS-EDT (1,2-ethanedithiol-treated PbS quantum dot
+# hole-transport layer)
+#
+# SOURCE (measured, spectroscopic ellipsometry):
+#   X. Mi et al., "Enhancing Open-Circuit Voltage in Infrared PbS Quantum Dot
+#   Heterojunction Solar Cells Using ZnO Nanowires Passivated by ALD of Al2O3,"
+#   ACS Appl. Energy Mater. 2025, 8, 6308-6319. DOI: 10.1021/acsaem.4c03316
+#   Supporting Information, Figure S3(a) (PbS QD n,k vs wavelength).
+#
+# WHY THIS APPLIES TO THE EDT LAYER:
+#   That cell is FTO/ZnO/PbS-QD/PbS-EDT/Au -- the same architecture as ours.
+#   The PbS QD first exciton is at ~1.3 um (~0.95 eV), matching our 0.9 eV
+#   absorber, and the EDT HTL (~70 nm) is the SAME PbS material. The n,k below
+#   are the measured PbS-QD optical constants, used here for the EDT layer.
+#
+# METHOD / PRECISION:
+#   Values digitized by eye from Figure S3(a) (linear axes: n 0-3.5 left,
+#   k 0-2.0 right, wavelength 300-2000 nm). Estimated uncertainty ~+/-0.05 on n
+#   and ~10-20% on k (larger in the low-k NIR tail). Good enough for FDTD;
+#   refine against the source figure if you need tighter tolerances.
+#
+# NOTE: This is denser/higher-index than the project's Pbs_QD.txt (n~2.4),
+#   because it is a different dot size/ligand. Use THIS for the EDT layer; keep
+#   Pbs_QD.txt for the absorber, OR adopt one consistent set -- your choice.
+#
+# Columns: Wavelength(nm)  n  k
+
+300	1.60	1.30
+350	2.50	1.75
+380	2.85	1.90
+400	2.98	1.85
+410	3.02	1.78
+450	2.88	1.35
+500	2.85	0.95
+550	2.86	0.70
+600	2.85	0.52
+650	2.84	0.42
+700	2.83	0.35
+750	2.82	0.30
+800	2.81	0.27
+850	2.80	0.24
+900	2.79	0.22
+950	2.78	0.20
+1000	2.77	0.18
+1100	2.75	0.15
+1200	2.73	0.13
+1300	2.71	0.11
+1400	2.69	0.07
+1500	2.67	0.045
+1600	2.65	0.030
+1700	2.63	0.020
+1800	2.61	0.012
+1900	2.59	0.006
+2000	2.56	0.002

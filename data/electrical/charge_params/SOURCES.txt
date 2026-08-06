@@ -1,0 +1,43 @@
+ELECTRICAL PARAMETER SOURCES — QD / Perovskite tandem CHARGE model
+==================================================================
+
+[S1] "Performance optimization of efficient PbS quantum dots solar cells
+     through numerical simulation", Scientific Reports 13, 10759 (2023).
+     https://www.nature.com/articles/s41598-023-36769-y
+     Open access: https://pmc.ncbi.nlm.nih.gov/articles/PMC10310699/
+     -> PbS-QD absorber (PbS-TBAI), p-PbS-EDT hole layer, MoO3, TiO2  (Table 1).
+     This paper models the SAME PbS-QD / PbS-EDT / MoOx materials we use.
+
+[S2] "Comprehensive Analysis for Low-Cost and Highly Efficient Perovskite
+     Solar Cells Using SCAPS-1D with an Inexpensive Hole Transport Material,
+     Electron Transport Material, and Back Contact Considering the Toxicity"
+     (PMC, 2024/25).  https://pmc.ncbi.nlm.nih.gov/articles/PMC12409573/
+     -> MAPbI3 absorber + ETL/HTL parameter table.
+
+[S3] "Performance simulation of the perovskite solar cells with Ti3C2 MXene
+     in the SnO2 electron transport layer" (PMC, 2024).
+     https://pmc.ncbi.nlm.nih.gov/articles/PMC10923826/
+     -> SnO2 ETL  (Table 1).
+
+[S4] FTO front-contact values are the consensus set used across SCAPS
+     perovskite studies (FTO: Eg ~3.5 eV, chi 4.4 eV, work function 4.4 eV),
+     e.g. "Numerical simulation and optimization of FTO/TiO2/CZTS/CuO/Au solar
+     cell using SCAPS-1D", Sci. Rep. 15 (2025) s41598-025-12999-0.
+     https://www.nature.com/articles/s41598-025-12999-0
+
+[S5] PROJECT (this work) — FDTD optical design.
+     QD best = QD_1550_NH4I (Eg = 0.80 eV)
+       -> data/generation/charge_best.mat
+     Voltage hedge = QD_1200_NH4I (Eg = 1.03 eV)
+       -> data/generation/charge_hedge.mat
+     Layer thicknesses: FTO 300 / SnO2 40 / MAPbI3 550 / PbS-QD 300 /
+     p-PbS-EDT 50 / MoOx 10 / Au 100 nm.
+
+USAGE / TAGS
+- (S1..S4)  : taken directly from the cited table.
+- (design)  : from this project's optical model [S5].
+- (sweep)   : a knob to vary in CHARGE; the listed number is a literature start.
+- (range)   : literature spread is wide; a representative value + the range given.
+- Thermal velocity = 1e7 cm/s for all layers (standard, S1/S2).
+- Temperature 300 K, illumination AM1.5G 1-sun.
+- `Q.mat` was a thermal-power export and is not a carrier-generation input.

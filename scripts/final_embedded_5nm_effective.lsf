@@ -1,0 +1,73 @@
+# Final QDs-in-perovskite optical baseline.
+# Homogeneous Maxwell-Garnett mixture using the repository's QD-5nm dataset
+# at 20% volume fill in an 850 nm thickness-matched active layer.
+
+q_e=1.602176634e-19;
+host_mat="perovskite";
+inc_mat="QD-5nm";
+qd_fill=0.20;
+span_x=50e-9; span_y=50e-9;
+t_act=850e-9;
+t_au=100e-9; t_mox=10e-9; t_edt=50e-9; t_sno2=40e-9; t_fto=300e-9;
+
+Nw=400;
+fg=linspace(c/1700e-9,c/300e-9,Nw);
+sampled_data=matrix(Nw,2);
+for(w_i=1:Nw){
+  nh=getfdtdindex(host_mat,fg(w_i),fg(w_i),fg(w_i));
+  ni=getfdtdindex(inc_mat,fg(w_i),fg(w_i),fg(w_i));
+  eps_h=nh^2; eps_i=ni^2;
+  beta=qd_fill*(eps_i-eps_h)/(eps_i+2*eps_h);
+  eps_eff=eps_h*(1+2*beta)/(1-beta);
+  sampled_data(w_i,1)=fg(w_i);
+  sampled_data(w_i,2)=eps_eff;
+}
+
+switchtolayout;
+blendmat=addmaterial("Sampled 3D data");
+setmaterial(blendmat,"sampled data",sampled_data);
+setmaterial(blendmat,"name","QD5nm_20pct_in_MAPbI3_MG");
+
+build_embedded_active;
+setnamed("Perovskite","material","QD5nm_20pct_in_MAPbI3_MG");
+setnamed("FDTD","mesh accuracy",3);
+
+gen_x=0; gen_x_span=span_x;
+gen_y=0; gen_y_span=span_y;
+gen_z=(z_active_bottom+z_active_top)/2;
+gen_z_span=t_act;
+prepare_generation_group;
+
+save("final_embedded_5nm_effective.fsp");
+run;
+runanalysis("solar_generation");
+
+G_result=getresult("solar_generation","G");
+G_x=G_result.x; G_y=G_result.y; G_z=G_result.z; G_3d=G_result.G;
+Igen_box=q_e*integrate2(G_3d,1:3,G_x,G_y,G_z);
+Jgen_box=Igen_box/((max(G_x)-min(G_x))*(max(G_y)-min(G_y)))/10;
+
+fmon=getdata("P_pvk_top","f");
+lam=c/fmon; Nlam=length(lam);
+Rspec=transmission("R"); Tspec=transmission("T"); Atot=1-Rspec-Tspec;
+Aactive=-transmission("P_pvk_top")+transmission("P_qd_edt");
+solar_wavelength=solar(0); solar_irradiance=solar(1); Iam=matrix(Nlam,1);
+for(w_i=1:Nlam){
+  Iam(w_i)=interp(solar_irradiance,solar_wavelength,lam(w_i));
+}
+Jint=0;
+for(w_i=1:Nlam-1){
+  dl=lam(w_i+1)-lam(w_i);
+  Jint=Jint+0.5*((Aactive(w_i)*Iam(w_i)*lam(w_i)+Aactive(w_i+1)*Iam(w_i+1)*lam(w_i+1))/(h*c))*dl;
+}
+Jactive_opt=abs(q_e*Jint*0.1);
+bound_error=max([max(Rspec)-1,-min(Rspec),max(Atot)-1,-min(Atot),0]);
+
+?"=== FINAL EMBEDDED 5 NM EFFECTIVE-MEDIUM BASELINE ===";
+?"Active thickness="+num2str(t_act*1e9)+" nm  QD fill="+num2str(qd_fill);
+?"Flux optical current="+num2str(Jactive_opt)+" mA/cm2";
+?"Generation-box current="+num2str(Jgen_box)+" mA/cm2";
+?"Maximum R/A bound error="+num2str(bound_error);
+
+matlabsave("embedded_5nm_results",lam,Rspec,Tspec,Atot,Aactive,Jactive_opt,Jgen_box,bound_error,qd_fill,t_act);
+matlabsave("G_embedded_5nm_raw",G_x,G_y,G_z,G_3d,t_au,t_mox,t_edt,t_act,t_sno2,t_fto,qd_fill);

@@ -1,0 +1,20 @@
+# Configure the built-in solar-generation group before run.
+# Required caller variables:
+#   gen_x, gen_x_span, gen_y, gen_y_span, gen_z, gen_z_span
+# This script prevents the built-in group from writing the misleading thermal Q.mat.
+
+if(getnamednumber("solar_generation")==0){
+  ?"ERROR: solar_generation analysis group is missing from the loaded FDTD model.";
+}
+setnamed("solar_generation","enabled",1);
+setnamed("solar_generation","x",gen_x);
+setnamed("solar_generation","x span",gen_x_span);
+setnamed("solar_generation","y",gen_y);
+setnamed("solar_generation","y span",gen_y_span);
+setnamed("solar_generation","z",gen_z);
+setnamed("solar_generation","z span",gen_z_span);
+setnamed("solar_generation","average dimension","none");
+setnamed("solar_generation","periods",1);
+setnamed("solar_generation","G export filename","");
+setnamed("solar_generation","Q export filename","");
+setnamed("solar_generation","make plots",0);

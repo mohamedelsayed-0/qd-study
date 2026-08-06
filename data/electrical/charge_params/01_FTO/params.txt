@@ -1,0 +1,20 @@
+LAYER 01 — FTO  (transparent front contact, cathode side)
+=========================================================
+Role        : transparent conducting oxide / front electrode
+Thickness   : 300 nm                          (design, S5)
+
+Eg          : 3.5  eV                          (FTO consensus, S4)
+chi (EA)    : 4.4  eV                          (S4)
+eps_r       : 9.0                              (S4)
+Nc          : 2.2e18 cm-3                      (S4)
+Nv          : 1.8e19 cm-3                      (S4)
+mu_n        : 20   cm2/Vs                      (S4)
+mu_p        : 10   cm2/Vs                      (S4)
+N_D (donor) : 1e19 cm-3   (n-type, degenerate) (S4)
+N_A         : 0
+Nt (defect) : 1e15 cm-3                        (S4)
+work func.  : 4.4 eV  (if used as a contact)   (S4)
+
+Note: FTO is often set as a transparent ohmic front contact (cathode) rather
+than a full semiconductor layer. If CHARGE uses a contact boundary at the FTO,
+use the 4.4 eV work function.

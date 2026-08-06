@@ -1,0 +1,10 @@
+design,base,param,pce_low,pce_high
+D1,20.59,QD affinity (3.75-3.95 eV),18.48,22.43
+D1,20.59,QD lifetime (1-30 us),18.10,20.96
+D1,20.59,MAPbI3 lifetime (50-500 ns),19.43,21.79
+D1,20.59,Interface SRV (0-1e4),20.59,18.34
+D1,20.59,SnO2 affinity (3.9-4.2 eV),20.95,19.21
+D2,20.27,SnO2 affinity (3.9-4.2 eV),20.37,17.04
+D2,20.27,Interface SRV (0-1e4),20.27,19.91
+D2,20.27,Blend lifetime (1-10 us),20.25,20.27
+D2,20.27,Blend gap (1.40-1.50 eV),20.27,20.27

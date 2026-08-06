@@ -1,0 +1,52 @@
+# Optical constants of SnO2 (tin oxide, electron transport layer / ETL)
+#
+# SOURCE (measured, spectroscopic ellipsometry):
+#   L. Ma, X. Xu, C. Cui, T. Li, S. Lou, P. J. Scott, X. Jiang, W. Zeng,
+#   "A Review of Measurement and Characterization of Film Layers of Perovskite
+#   Solar Cells by Spectroscopic Ellipsometry," Nanomaterials 2025, 15, 282.
+#   DOI: 10.3390/nano15040282  (open access)
+#   - n dispersion digitized from Figure 6b (SnO2 SE, 300-1000 nm; orig. ref [53]).
+#   - k / band edge from Figure 6c and Table 1 (SnO2 Eg = 3.6-4.35 eV; the review
+#     states the SnO2 extinction coefficient is ~0 in the visible and infrared
+#     and only absorbs in the UV).
+#
+# PHYSICAL NOTE:
+#   SnO2 is a wide-bandgap transparent conducting/dielectric ETL. Across the
+#   device's working range (~350-1400 nm) it is essentially non-absorbing
+#   (k ~ 0); its optical role is interference/index, not absorption. The n
+#   dispersion (~2.05 -> 1.90 from blue to NIR) is the part that matters.
+#
+# PRECISION:
+#   n digitized by eye from a small multi-curve figure (~+/-0.03). k below 380 nm
+#   is an approximate band-edge tail (Eg ~ 3.7 eV); k = 0 above 400 nm to good
+#   accuracy. NIR (1000-1400 nm) n is a flat extrapolation (SnO2 is dispersionless
+#   and transparent there). Replace with your own ellipsometry if available.
+#
+# Columns: Wavelength(nm)  n  k
+
+300	2.250	0.250
+310	2.230	0.180
+320	2.200	0.100
+330	2.160	0.050
+340	2.140	0.020
+350	2.120	0.008
+360	2.100	0.003
+370	2.085	0.001
+380	2.070	0.0005
+400	2.050	0.0000
+450	2.020	0.0000
+500	2.000	0.0000
+550	1.985	0.0000
+600	1.975	0.0000
+650	1.965	0.0000
+700	1.955	0.0000
+750	1.950	0.0000
+800	1.945	0.0000
+850	1.940	0.0000
+900	1.935	0.0000
+950	1.930	0.0000
+1000	1.925	0.0000
+1100	1.915	0.0000
+1200	1.905	0.0000
+1300	1.900	0.0000
+1400	1.895	0.0000

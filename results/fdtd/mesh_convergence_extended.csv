@@ -1,0 +1,4 @@
+model,mesh_accuracy,Jopt_mA_cm2,notes
+d2_max,3,50.280,acc=3 closure; agrees with base sweep acc=3 (50.57) to ~0.5%
+d1_max_no_frontex,3,,Jopt-formula anomaly (3319 mA/cm2) with front-texture disabled — needs debug
+d1_max,3,43.383,acc=3 closure w/ front-tex and 12nm tooth override

@@ -1,0 +1,10 @@
+dop_cm3,Jsc,Voc,FF,PCE_Rs0,PCE_Rs0p5,PCE_Rs1,PCE_Rs2,notes
+1e+14,50.27,0.7130,0.674,24.14,,,20.52,current-dominated (Rs>0 from prior map only)
+1e+15,50.17,0.7190,0.671,24.21,,,20.57,d2_max standard preset
+2e+15,49.98,0.7556,0.615,23.21,22.39,21.60,20.03,denser sweep
+5e+15,42.96,0.8660,0.635,23.61,,,21.57,transition regime (prior map only)
+8e+15,37.50,0.9008,0.726,24.52,24.03,23.53,22.54,denser sweep
+1e+16,36.92,0.9150,0.737,24.91,,,22.93,d2_high_voltage preset
+2e+16,35.52,0.9579,0.762,25.94,25.46,24.98,24.03,denser sweep
+5e+16,33.93,1.0039,0.791,26.93,26.46,25.99,25.08,extended 1.4V sweep
+1e+17,32.90,1.0311,0.811,27.50,27.05,26.61,25.71,extended 1.4V sweep NEW MAX

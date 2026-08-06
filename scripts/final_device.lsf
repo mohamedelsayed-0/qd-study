@@ -1,0 +1,65 @@
+# Final intended planar double-junction device.
+# Rebuilds a flat, contiguous stack, saves under a new filename before running,
+# and exports absorber generation for the matching CHARGE model.
+
+span=50e-9;
+qd_mat="QD_1550_NH4I";
+t_au=100e-9; t_mox=10e-9; t_edt=50e-9; t_qd=300e-9;
+t_pvk=550e-9; t_sno2=40e-9; t_fto=300e-9;
+
+build_planar_double_junction;
+setnamed("FDTD","mesh accuracy",3);
+
+# The generation box exactly covers the two contiguous absorber layers.
+gen_x=0; gen_x_span=span;
+gen_y=0; gen_y_span=span;
+gen_z=(z_qd_bottom+z_pvk_top)/2;
+gen_z_span=z_pvk_top-z_qd_bottom;
+prepare_generation_group;
+
+?"=== FINAL PLANAR STACK (nm) ===";
+?"Au 0-100 | MoOx 100-110 | EDT 110-160 | QD 160-460";
+?"MAPbI3 460-1010 | SnO2 1010-1050 | FTO 1050-1350 | glass 1350-1650";
+?"Maximum inter-layer gap = 0 nm";
+
+# Change the current filename before run so the opened base FSP is not overwritten.
+save("final_planar_double_junction.fsp");
+run;
+runanalysis("solar_generation");
+
+G_result=getresult("solar_generation","G");
+G_x=G_result.x; G_y=G_result.y; G_z=G_result.z; G_3d=G_result.G;
+Igen_box=1.602176634e-19*integrate2(G_3d,1:3,G_x,G_y,G_z);
+Jgen_box=Igen_box/((max(G_x)-min(G_x))*(max(G_y)-min(G_y)))/10;
+
+q_e=1.602176634e-19;
+fmon=getdata("P_pvk_qd","f"); lam=c/fmon; Nlam=length(lam);
+Rspec=transmission("R"); Tspec=transmission("T");
+Ptop=-transmission("P_pvk_top"); Pmid=-transmission("P_pvk_qd"); Pbottom=-transmission("P_qd_edt");
+Apvk=Ptop-Pmid; Aqd=Pmid-Pbottom; Atot=1-Rspec-Tspec;
+solar_wavelength=solar(0); solar_irradiance=solar(1); Iam=matrix(Nlam,1);
+for(metric_i=1:Nlam){ Iam(metric_i)=interp(solar_irradiance,solar_wavelength,lam(metric_i)); }
+Jpvk_int=0; Jqd_int=0;
+for(metric_i=1:Nlam-1){
+  dl=lam(metric_i+1)-lam(metric_i);
+  metric_p1=Apvk(metric_i)*Iam(metric_i)*lam(metric_i); metric_p2=Apvk(metric_i+1)*Iam(metric_i+1)*lam(metric_i+1);
+  metric_q1=Aqd(metric_i)*Iam(metric_i)*lam(metric_i); metric_q2=Aqd(metric_i+1)*Iam(metric_i+1)*lam(metric_i+1);
+  Jpvk_int=Jpvk_int+0.5*(metric_p1+metric_p2)*dl/(h*c);
+  Jqd_int=Jqd_int+0.5*(metric_q1+metric_q2)*dl/(h*c);
+}
+Jpvk_opt=abs(q_e*Jpvk_int*0.1); Jqd_opt=abs(q_e*Jqd_int*0.1); Jtotal_opt=Jpvk_opt+Jqd_opt;
+Jpvk_proxy=0.90*Jpvk_opt; Jqd_proxy=0.60*Jqd_opt; Jtotal_proxy=Jpvk_proxy+Jqd_proxy;
+R_min=min(Rspec); R_max=max(Rspec); A_min=min(Atot); A_max=max(Atot);
+
+?"=== PLANAR DOUBLE-JUNCTION REFERENCE ===";
+?"Raw optical current: MAPbI3="+num2str(Jpvk_opt)+"  PbS-QD="+num2str(Jqd_opt)+"  TOTAL="+num2str(Jtotal_opt)+" mA/cm2";
+?"Generation-box current="+num2str(Jgen_box)+" mA/cm2";
+?"Historical collection proxy (not FDTD Jsc): MAPbI3="+num2str(Jpvk_proxy)+"  PbS-QD="+num2str(Jqd_proxy)+"  TOTAL="+num2str(Jtotal_proxy)+" mA/cm2";
+?"Energy sanity: R=["+num2str(R_min)+","+num2str(R_max)+"]  A_total=["+num2str(A_min)+","+num2str(A_max)+"]";
+
+matlabsave("final_device_out",lam,Rspec,Tspec,Apvk,Aqd,Atot,Jpvk_opt,Jqd_opt,Jtotal_opt,Jpvk_proxy,Jqd_proxy,Jtotal_proxy);
+matlabsave("G_planar_double_junction_raw",G_x,G_y,G_z,G_3d,t_au,t_mox,t_edt,t_qd,t_pvk,t_sno2,t_fto);
+plot(lam*1e9,Rspec,Atot,Tspec,"wavelength (nm)","R / A / T","Planar double junction: R vs absorptance");
+legend("Reflectance","A total","Transmittance");
+plot(lam*1e9,Apvk,Aqd,Atot,"wavelength (nm)","Absorptance","Planar double junction: absorber-resolved");
+legend("A MAPbI3","A PbS-QD","A total");

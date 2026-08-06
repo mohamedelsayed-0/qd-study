@@ -1,0 +1,4 @@
+config,Jopt_mA_cm2,note
+semi_infinite_glass,39.49,baseline domain (front reflection excluded)
+explicit_air_glass,37.88,-1.6 mA front Fresnel loss
+explicit_air_MgF2_glass,38.59,110nm ARC recovers +0.71

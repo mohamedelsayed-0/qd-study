@@ -1,0 +1,13 @@
+LAYER 07 — Au  (back contact / anode)
+=====================================
+Role        : metal back electrode (anode); also the optical back mirror
+Thickness   : 100 nm                           (design, S5)
+
+Model as    : metal CONTACT (boundary condition), not a semiconductor layer
+work func.  : 5.1 eV   (Au standard; use 5.3-5.4 if folding in MoOx)  (std, S1-class)
+Surf. recomb: Sn = Sp = 1e7 cm/s   (ohmic-like back contact)
+
+Note: in CHARGE, Au is the anode boundary condition defined by its work function,
+not by Eg/chi/Nc/Nv. The MoOx layer (06) sets the hole-selective energetics into
+this contact. If you do NOT model MoOx explicitly, use a 5.3-5.4 eV anode work
+function to emulate the MoOx/Au stack.

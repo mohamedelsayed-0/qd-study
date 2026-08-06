@@ -1,0 +1,23 @@
+LAYER 04 — PbS-QD  (quantum-dot film, NIR absorber)     *** BEST ***
+=======================================================================
+Role        : near-IR absorber (800-1700 nm)
+Thickness   : 300 nm                           (design, S5)
+Material    : QD_1550_NH4I (best).  Hedge: QD_1200_NH4I -> Eg 1.03 eV
+
+Eg          : 0.80 eV   (best, QD_1550_NH4I)       (design, S5)  <-- NOT lit 1.1-1.3
+              1.03 eV   (voltage-hedge variant, QD_1200_NH4I)    (design, S5)
+chi (EA)    : 4.0  eV                           (PbS CQD, S1; adjust for alignment)
+eps_r       : 20                                (S1)
+Nc          : 1e19 cm-3                          (S1)
+Nv          : 1e19 cm-3                          (S1)
+mu_n        : 2e-2 cm2/Vs   (sweep 1e-4 ... 1e-2) (S1)
+mu_p        : 2e-2 cm2/Vs   (sweep 1e-4 ... 1e-2) (S1)
+N_D (donor) : 1e15 cm-3     (NH4I -> mildly n-type; sweep 1e15 ... 1e17) (S1)
+N_A         : 1e15 cm-3                          (S1)
+Nt (defect) : 1e14 cm-3     (sweep 1e14 ... 1e16) (S1)
+tau (SRH)   : set via Nt (sweep)
+
+Note: transport / dielectric / DOS / doping from PbS colloidal-QD literature [S1]
+(their PbS-TBAI absorber). Eg is OUR 0.80 eV NIR dot [S5], so the valence band
+sits near chi+Eg = ~4.8 eV. These are the most influential layer parameters ->
+sweep mobility, doping, and trap density here first.

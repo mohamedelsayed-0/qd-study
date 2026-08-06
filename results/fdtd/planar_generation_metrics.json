@@ -1,0 +1,30 @@
+{
+  "source": "data/generation/planar_fdtd_raw.mat",
+  "source_sha256": "00dfc5efc7c833aaf13816175253051ddf3228d436c68604be86e96f32a8d0d3",
+  "output": "data/generation/charge_best.mat",
+  "grid": {
+    "fdtd_shape": [
+      8,
+      8,
+      91
+    ],
+    "charge_shape": [
+      2,
+      91,
+      2
+    ],
+    "x_points": 2,
+    "y_points": 91,
+    "z_points": 2
+  },
+  "active_bounds_nm": {
+    "bottom": 160.0,
+    "qd_mapbi3_interface": 460.0,
+    "top": 1010.0000000000001
+  },
+  "photon_current_mA_cm2": {
+    "PbS_QD": 16.29608850265136,
+    "MAPbI3": 26.800088426397014,
+    "total": 43.09617692904836
+  }
+}

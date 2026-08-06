@@ -1,0 +1,7 @@
+source_generation,design,Jopt_before,Jopt_after_filter,retained_fraction
+charge_hedge.mat,D1,39.487,31.359,0.7942
+charge_embedded.mat,D2,43.173,25.511,0.5909
+charge_d1_max.mat,D1,42.742,33.942,0.7941
+charge_d2_max.mat,D2,50.568,29.970,0.5927
+charge_d1_max_unpol.mat,D1,42.631,33.882,0.7948
+charge_d2_max_unpol.mat,D2,50.369,29.850,0.5926

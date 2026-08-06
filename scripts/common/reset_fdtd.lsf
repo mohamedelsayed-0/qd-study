@@ -1,0 +1,54 @@
+# Canonical FDTD reset for every reproducible run in this repository.
+# This script intentionally does NOT run the solver or rebuild layer positions.
+# Call it before a geometry builder after defining the geometry parameters.
+
+switchtolayout;
+
+# Disable analysis/experimental objects that can silently contaminate another run.
+reset_objects={"AUTEX","texmesh","QD2","QD3","PVK2","AR","TEX","QDSPACER",
+               "QDcyl","QDMAT","QDrib","BSPACER","MIDREF","genfield",
+               "genindex","qdmesh","QDPATTERN","PATTERN_MESH",
+               "CF_Au","CF_Glass","CF_MoOx","CF_EDT","CF_QD","CF_PVK","CF_SnO2","CF_FTO"};
+for(reset_i=1:length(reset_objects)){
+  if(getnamednumber(reset_objects{reset_i})>0){
+    setnamed(reset_objects{reset_i},"enabled",0);
+  }
+}
+if(getnamednumber("solar_generation")>0){ setnamed("solar_generation","enabled",0); }
+
+# Canonical material assignments.
+setnamed("Glass","enabled",1);       setnamed("Glass","material","SiO2 (Glass) - Palik");
+setnamed("FTO","enabled",1);         setnamed("FTO","material","FTO");
+setnamed("SnO2","enabled",1);       setnamed("SnO2","material","SnO2");
+setnamed("Perovskite","enabled",1); setnamed("Perovskite","material","perovskite");
+setnamed("QD-Pbs","enabled",1);
+setnamed("p-PbS-EDT","enabled",1);  setnamed("p-PbS-EDT","material","PbS-EDT");
+setnamed("MOo3","enabled",1);       setnamed("MOo3","material","MOO3");
+setnamed("Au","enabled",1);         setnamed("Au","material","Au (Gold) - Palik Copy 1");
+
+# Canonical 3D planar solver state. Geometry builders set the spans/positions.
+select("FDTD");
+set("dimension","3D");
+set("x min bc","Periodic"); set("x max bc","Periodic");
+set("y min bc","Periodic"); set("y max bc","Periodic");
+set("z min bc","PML");      set("z max bc","PML");
+set("mesh accuracy",2);
+
+select("PlaneWave");
+set("enabled",1);
+set("plane wave type","Bloch/periodic");
+set("injection axis","z");
+set("direction","Backward");
+set("angle theta",0);
+set("polarization angle",0);
+
+setglobalsource("wavelength start",300e-9);
+setglobalsource("wavelength stop",1700e-9);
+setglobalmonitor("use source limits",1);
+setglobalmonitor("frequency points",300);
+
+reset_monitors={"R","T","P_pvk_top","P_pvk_qd","P_qd_edt"};
+for(reset_i=1:length(reset_monitors)){
+  setnamed(reset_monitors{reset_i},"enabled",1);
+  setnamed(reset_monitors{reset_i},"monitor type","2D Z-normal");
+}

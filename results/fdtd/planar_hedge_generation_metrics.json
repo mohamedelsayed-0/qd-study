@@ -1,0 +1,32 @@
+{
+  "variant": "hedge",
+  "source": "data/generation/planar_hedge_fdtd_raw.mat",
+  "source_sha256": "5363918a5d6cd132c8d55c57d68d238b2b689a2ca5677b70c44bbcd00a09a2cb",
+  "output": "data/generation/charge_hedge.mat",
+  "coordinate_shift_nm": 349.9999999999994,
+  "grid": {
+    "fdtd_shape": [
+      71,
+      7,
+      75
+    ],
+    "charge_shape": [
+      2,
+      75,
+      2
+    ],
+    "x_points": 2,
+    "y_points": 75,
+    "z_points": 2
+  },
+  "active_bounds_nm": {
+    "bottom": 160.0,
+    "qd_mapbi3_interface": 460.0,
+    "top": 1010.0000000000001
+  },
+  "photon_current_mA_cm2": {
+    "PbS_QD": 11.954734241635927,
+    "MAPbI3": 27.171789796529982,
+    "total": 39.48726019453122
+  }
+}

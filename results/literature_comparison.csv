@@ -1,0 +1,17 @@
+year,type,classification,device,PCE_pct,Jsc_mA_cm2,doi,notes
+2025,experiment,PbS CQD only,PbS CQD p-i-n record (Gao et al. Adv Mater),13.62,~30,10.1002/adma.202512933,certified; SAM-bridged NiOx contact
+2025,experiment,PbS CQD only,PbS CQD ink stable cells (Nature Energy),13.40,,10.1038/s41560-025-01746-4,certified small cells; 10 pct certified module
+2024,experiment,PbS CQD only,PbS CQD heterojunction (Zhang et al. Adv Sci),13.4,,10.1002/advs.202402756,interfacial heterojunction
+2018,experiment,PbS-in-perovskite hybrid,MAPbI3/PbS hybrid film (Han et al. Small),18.6,,10.1002/smll.201801016,closest experimental analogue of D2; improvement attributed to crystallization/mobility/FF not intermediate-band; FF above 0.77
+2019,experiment,PbS-in-perovskite hybrid,PbS-QD-modified perovskite (Appl Surf Sci),19.24,,,QD surface modification route
+2019,experiment,Perovskite QD,CsPbI3/FAPbI3 perovskite-QD bilayer (ACS Energy Lett),15.6,,10.1021/acsenergylett.9b01920,perovskite quantum dots
+2024,experiment,Perovskite QD,FAPbI3 perovskite-QD cells,>18,,,current perovskite-QD leaders
+2023,experiment,PbS CQD infrared,PbS QD infrared-only cells (Small Sci review),~1.3 IR,,10.1002/smsc.202300062,beyond-1100nm contribution only
+2025,simulation,SCAPS-1D idealized,Pb-based QD cell SCAPS-1D (IOP JPhys Energy),32.9,,10.1088/2515-7655/ada4dd,studies resistive elements per authors; not resistance-free but idealized transport
+2025,simulation,SCAPS-1D idealized,PbS QD/perovskite hybrid SCAPS (Mater Lett),~22,,10.1016/j.matlet.2025.138810,1D; 20 nm QD interlayer on MAPbI3
+2026,this work intermediate-band interpretation,coupled 3D FDTD + CHARGE,D1 planar QD film + grating,24.0,42.7,,22.4 pct at Rs=1 ohm-cm2; assumes all absorbed photons collected
+2026,this work intermediate-band interpretation,coupled 3D FDTD + CHARGE,D2 QD-in-perovskite blend + grating,24.2,50.2,,22.3 pct at Rs=1 ohm-cm2; assumes all absorbed photons collected
+2026,this work strict single-gap,coupled 3D FDTD + CHARGE full re-solve,D1 planar QD film + grating,18.80,33.9,,spectrally filtered generation re-solved in CHARGE (not a rescale)
+2026,this work strict single-gap,coupled 3D FDTD + CHARGE full re-solve,D2 QD-in-perovskite blend + grating,14.23,29.9,,spectrally filtered generation re-solved in CHARGE; realigns with hybrid experiments
+2019,experiment,PbS-in-perovskite intermediate band,PbS QD + lead halide perovskite IB cell (Hosokawa et al. Nat Commun 10 43),,,10.1038/s41467-018-07655-3,demonstrates intermediate-band operation in a D2-like architecture; supports the upper-bound reading
+2023,experiment,PbS-in-perovskite intermediate band,PbS QDs in MAPbI3 sub-bandgap sensitization (Ribeiro et al. Nanomaterials 13 2447),,,10.3390/nano13172447,>10x NIR absorption enhancement + photoconductivity evidence for intermediate mini-band

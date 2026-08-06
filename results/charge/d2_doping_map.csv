@@ -1,0 +1,5 @@
+dop_cm3,Jsc,Voc,FF,PCE_Rs0,PCE_Rs2,notes
+1e14,50.27,0.713,0.674,24.14,20.52,current-dominated
+1e15,50.17,0.719,0.671,24.21,20.57,d2_max standard
+5e15,42.96,0.866,0.635,23.61,21.57,transition regime
+1e16,36.92,0.915,0.737,24.91,22.93,d2_high_voltage sweet spot

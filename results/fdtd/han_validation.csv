@@ -1,0 +1,5 @@
+fill_volfrac,han_mg_per_mL,Jopt_active_mA_cm2,above_gap_fraction_800nm
+1e-06,0,32.589,0.7347
+0.00033,0.5,32.617,0.7341
+0.00066,1,32.646,0.7335
+0.2,nan,42.336,0.5621

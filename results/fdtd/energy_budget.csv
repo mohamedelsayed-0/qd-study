@@ -1,0 +1,5 @@
+design,layer,Eg_eV,J_above_gap_mA_cm2,J_below_gap_mA_cm2,ideal_ceiling_mA_cm2
+D1,MAPbI3,1.55,22.809,4.904,27.091
+D1,PbS-QD,1.03,12.540,4.206,47.275
+D2,blend,1.44,26.943,18.334,30.817
+D2,blend_at_1p03,1.03,38.692,6.584,47.275

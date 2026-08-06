@@ -1,0 +1,73 @@
+# Build the canonical planar dual-absorber/double-junction stack.
+# Required caller variables:
+#   span, qd_mat, t_au, t_mox, t_edt, t_qd, t_pvk, t_sno2, t_fto
+# Outputs:
+#   z_qd_bottom, z_pvk_qd, z_pvk_top, device_height
+
+reset_fdtd;
+setnamed("QD-Pbs","material",qd_mat);
+
+zb=0;
+select("Au");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",zb+t_au/2); set("z span",t_au); zb=zb+t_au;
+
+select("MOo3");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",zb+t_mox/2); set("z span",t_mox); zb=zb+t_mox;
+
+select("p-PbS-EDT");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",zb+t_edt/2); set("z span",t_edt); zb=zb+t_edt;
+
+z_qd_bottom=zb;
+select("QD-Pbs");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",zb+t_qd/2); set("z span",t_qd); zb=zb+t_qd;
+
+z_pvk_qd=zb;
+select("Perovskite");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",zb+t_pvk/2); set("z span",t_pvk); zb=zb+t_pvk;
+
+z_pvk_top=zb;
+select("SnO2");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",zb+t_sno2/2); set("z span",t_sno2); zb=zb+t_sno2;
+
+select("FTO");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",zb+t_fto/2); set("z span",t_fto); zb=zb+t_fto;
+device_height=zb;
+
+select("Glass");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",device_height+150e-9); set("z span",300e-9);
+
+select("FDTD");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",(device_height+50e-9)/2); set("z span",device_height+450e-9);
+
+select("PlaneWave");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",device_height+120e-9);
+
+select("R");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",device_height+200e-9);
+
+select("P_pvk_top");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",z_pvk_top);
+
+select("P_pvk_qd");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",z_pvk_qd);
+
+select("P_qd_edt");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",z_qd_bottom);
+
+select("T");
+set("x",0); set("x span",span); set("y",0); set("y span",span);
+set("z",-100e-9);

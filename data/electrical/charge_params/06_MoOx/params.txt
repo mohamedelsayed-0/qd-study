@@ -1,0 +1,19 @@
+LAYER 06 — MoOx (MoO3)  (hole-extraction buffer)
+================================================
+Role        : high-work-function hole-extraction / electron-blocking buffer
+Thickness   : 10 nm                            (design, S5)
+
+Eg          : 3.0  eV                           (S1)
+chi (EA)    : 2.5  eV                           (S1)
+eps_r       : 12.5                              (S1)
+Nc          : 2.2e18 cm-3                       (S1)
+Nv          : 1.8e19 cm-3                       (S1)
+mu_n        : 25   cm2/Vs                        (S1)
+mu_p        : 100  cm2/Vs                        (S1)
+N_A (accept): 1e18 cm-3   (treat as p+ buffer; S1 swept 1e14 ... 1e19)
+N_D         : 0
+Nt (defect) : 1e14 cm-3                          (S1)
+work func.  : ~5.3-6.7 eV (deep; defines hole extraction)  (MoOx, well known)
+
+Note: MoOx is very thin (10 nm). Model it either as a doped p+ buffer (params
+above) OR fold it into the back-contact (Au) work function.

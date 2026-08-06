@@ -1,0 +1,30 @@
+{
+  "dot_diameter_nm": 5.0,
+  "target_fill_fraction": 0.2,
+  "achieved_fill_fraction": 0.199294,
+  "finest_mesh_nm": 0.6,
+  "finest_mesh_ranking": [
+    {
+      "pattern": "honeycomb",
+      "Junpolarized_mA_cm2": 45.6462
+    },
+    {
+      "pattern": "square",
+      "Junpolarized_mA_cm2": 45.3714
+    },
+    {
+      "pattern": "hex",
+      "Junpolarized_mA_cm2": 45.2801
+    }
+  ],
+  "finest_mesh_pattern_spread_mA_cm2": 0.366100000000003,
+  "mesh_shift_by_pattern_mA_cm2": {
+    "square": 0.3369,
+    "hex": 0.20409999999999684,
+    "honeycomb": 0.26769999999999783
+  },
+  "max_mesh_shift_mA_cm2": 0.3369,
+  "max_polarization_spread_mA_cm2": 0.594300000000004,
+  "ranking_resolved": false,
+  "conclusion": "Pattern ranking is not resolved at the current numerical uncertainty; treat square, hex, and honeycomb as optically equivalent until a finer isotropic mesh converges."
+}

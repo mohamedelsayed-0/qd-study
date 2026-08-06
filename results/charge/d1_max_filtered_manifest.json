@@ -1,0 +1,65 @@
+{
+  "variant": "hedge",
+  "source": "models/charge/hedge_1p03eV.ldev",
+  "generation": "data/generation/charge_d1_max_filtered.mat",
+  "geometry": "planar",
+  "width_nm": 50.0,
+  "qd_Eg_eV": 1.03,
+  "semiconductor_electronics": {
+    "EDT": {
+      "bandgap_eV": 1.14,
+      "electron_affinity_eV": 3.9,
+      "DEVICE_intrinsic_work_function_eV": 4.47
+    },
+    "QD": {
+      "bandgap_eV": 1.03,
+      "electron_affinity_eV": 3.85,
+      "DEVICE_intrinsic_work_function_eV": 4.365
+    },
+    "MAPbI3": {
+      "bandgap_eV": 1.55,
+      "electron_affinity_eV": 3.9,
+      "DEVICE_intrinsic_work_function_eV": 4.67067346971931
+    },
+    "SnO2": {
+      "bandgap_eV": 3.44,
+      "electron_affinity_eV": 4.0,
+      "DEVICE_intrinsic_work_function_eV": 5.693121138854294
+    }
+  },
+  "FTO_contact_work_function_eV": 4.4,
+  "effective_Au_MoOx_work_function_eV": 5.3,
+  "MoOx_CHARGE_representation": "folded into the high-work-function Au/MoOx anode; explicit in FDTD",
+  "thickness_m": {
+    "Au": 1e-07,
+    "MoOx": 1e-08,
+    "EDT": 5e-08,
+    "QD": 3.0000000000000004e-07,
+    "MAPbI3": 5.5e-07,
+    "SnO2": 4e-08,
+    "FTO": 3.0000000000000004e-07
+  },
+  "generation_bounds_nm": {
+    "bottom": 160.0,
+    "top": 1010.0000000000001
+  },
+  "JV_voltage_convention": "V_device = V_anode; J_device = -I_anode / area",
+  "solver_strategy": "dark equilibrium followed by illuminated voltage continuation with range backtracking",
+  "interface_recombination": "not yet enabled; required before publication",
+  "metrics": {
+    "Jsc_mA_cm2": 33.85523061607676,
+    "Voc_V": 0.728980469336383,
+    "FF": 0.7618990491238335,
+    "PCE_percent_at_100mW_cm2": 18.803517603221508,
+    "Vmpp_V": 0.6,
+    "Jmpp_mA_cm2": 31.33919600536918,
+    "integrated_generation_mA_cm2": 34.00789762542673,
+    "generation_import_error_percent": 0.19350935130698949,
+    "max_bandgap_error_eV": 0.0,
+    "max_electron_affinity_error_eV": 0.026878861145706257,
+    "collection_fraction_percent": 99.55108365994425,
+    "sweep_target_V": 1.0,
+    "sweep_reached_V": 1.0,
+    "sweep_complete": true
+  }
+}

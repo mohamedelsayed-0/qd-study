@@ -1,0 +1,13 @@
+{
+  "model": "models/fdtd/final_embedded_5nm_effective.fsp",
+  "active_thickness_nm": 850,
+  "QD_diameter_nm": 5,
+  "QD_fill_fraction": 0.2,
+  "mixing_model": "Maxwell-Garnett",
+  "flux_optical_current_mA_cm2": 44.91654348153673,
+  "generation_box_current_mA_cm2": 43.17308998350836,
+  "flux_generation_difference_percent": 3.8815397688493665,
+  "max_energy_bound_error": 0.0,
+  "CHARGE_generation": "data/generation/charge_embedded.mat",
+  "electrical_status": "Pending validated mixed transport and recombination parameters."
+}

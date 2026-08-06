@@ -1,0 +1,31 @@
+{
+  "variant": "embedded",
+  "active_kind": "embedded",
+  "source": "data/generation/embedded_5nm_fdtd_raw.mat",
+  "source_sha256": "a210e789ccb972631018d3ec716d2cb90403c051308e42ad4fd78ae2764c5113",
+  "output": "data/generation/charge_embedded.mat",
+  "coordinate_shift_nm": 0.0,
+  "grid": {
+    "fdtd_shape": [
+      7,
+      7,
+      88
+    ],
+    "charge_shape": [
+      2,
+      88,
+      2
+    ],
+    "x_points": 2,
+    "y_points": 88,
+    "z_points": 2
+  },
+  "active_bounds_nm": {
+    "bottom": 160.0,
+    "top": 1010.0000000000001
+  },
+  "photon_current_mA_cm2": {
+    "total": 43.17308998350836,
+    "embedded_active": 43.17308998350836
+  }
+}

@@ -1,0 +1,19 @@
+LAYER 02 — SnO2  (electron transport layer, ETL)
+================================================
+Role        : electron transport / hole blocking
+Thickness   : 40 nm                            (design, S5)
+
+Eg          : 3.44 eV                          (S3)
+chi (EA)    : 4.39 eV                          (S3)
+eps_r       : 9.0                              (S3)
+Nc          : 2.2e18 cm-3                      (S3)
+Nv          : 1.8e19 cm-3                      (S3)
+mu_n        : 1e2 cm2/Vs   (range 7.6e-6 ... 240; see note) (S3 + range)
+mu_p        : 25  cm2/Vs                       (typical ETL, S2-class)
+N_D (donor) : 1e17 cm-3    (sweep 1e16 ... 1e19)            (S3)
+N_A         : 0
+Nt (defect) : 1e15 cm-3                        (S3)
+
+Note: S3's table lists mu_n = 7.56e-6 cm2/Vs (a low fitted value); most SnO2
+studies use 20-240 cm2/Vs. SnO2 is a low-sensitivity transport layer — start at
+mu_n ~ 1e2 and donor 1e17; sweep donor density if an S-shaped JV appears.
